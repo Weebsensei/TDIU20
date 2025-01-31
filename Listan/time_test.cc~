@@ -1,0 +1,14 @@
+#include "catch.hpp"
+#include "List.h"
+
+using namespace std;
+
+
+
+TEST_CASE ("Constructors and getters")
+{
+   SECTION("Default")
+   {
+      Sorted_List empty{};
+   }
+}

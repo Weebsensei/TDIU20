@@ -1,0 +1,8 @@
+#include "List.h"
+#include <stdexcept>
+#include<iomanip>
+
+List::Sorted_List();
+head{nullptr}, tail{nullptr}
+{
+}
