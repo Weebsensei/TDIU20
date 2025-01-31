@@ -1,0 +1,44 @@
+#ifndef List_H
+#define List_H
+#include<initializer_list>
+#include<string>
+#include<sstream>
+#include<iostream>
+#include<iomanip>
+
+
+class Sorted_List
+{
+  public:
+    Sorted_List();       //Constructor
+    Sorted_List(std::initializer_list<int> const& list);
+    ~Sorted_List();     //Destructor
+    Sorted_List(Sorted_List const&);
+    Sorted_List(Sorted_List && rhs);
+    Sorted_List& operator=(Sorted_List const& rhs);
+    Sorted_List& operator=(Sorted_List && rhs);
+    bool empty() const; //??
+    void SortedInsert(int const insert);
+    void remove(int const& index);
+    int get(int const& index) const;
+    int size() const;
+    void print();
+    void empty_list();
+    //int at(int const& i) const;
+
+  private: 
+  class Node
+  {
+  public:
+    Node() = default;
+    Node(int data);
+    Node* prev{nullptr};
+    int data{};
+    Node* next{nullptr};
+  };
+
+    Node* head{};
+    Node* tail{};
+};
+
+#endif
