@@ -27,6 +27,7 @@ private:
 
     Pacman* pacman;
     vector<Ghost*> ghosts;
+    bool chasing;
 };
 
 #endif

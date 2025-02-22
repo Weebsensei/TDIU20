@@ -39,7 +39,6 @@ struct Point
 bool operator==(Point const& lhs, Point const& rhs);
 std::istream& operator>>(std::istream& is, Point& rhs);
 
-
 /*
   En klass för att representera spelarfiguren. Detta är en nedskalad version jämfört med det som
   kollegan skrev till spelet. Notera att din kod inte behöver ändras om man skulle gå från denna

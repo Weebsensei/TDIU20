@@ -20,12 +20,10 @@ public:
 
     virtual Point get_chase_point() const = 0;
     virtual Point get_scatter_point() const = 0;
-    virtual string get_color() const = 0;
+    string get_color() const;
 
 protected:
     const Pacman* pacman;
-    Point targetPos;
-    Point targetDir;
     Point pos;
     Point scatterPosition;
     string color;
@@ -38,10 +36,10 @@ public:
 
     Point get_chase_point() const override;
     Point get_scatter_point() const override;
-    string get_color() const override;
+    // string get_color() const override;
 
     bool is_angry() const;
-    void set_angry(bool);
+    void set_angry(bool anger);
 
 private:
     bool angry = false;
@@ -54,7 +52,7 @@ public:
 
     Point get_chase_point() const override;
     Point get_scatter_point() const override;
-    string get_color() const override;
+    // string get_color() const override;
 };
 
 class Clyde : public Ghost
@@ -64,7 +62,7 @@ public:
 
     Point get_chase_point() const override;
     Point get_scatter_point() const override;
-    string get_color() const override;
+    // string get_color() const override;
 private:
     int distance;
 };

@@ -1,84 +1,97 @@
 #include "ghost.h"
+#include <cmath>
 
 using namespace std;
-
-bool operator==(Point const& lhs, Point const& rhs)
-{
-    return lhs.x == rhs.x && lhs.y == rhs.y;
-}
-
-std::istream& operator>>(std::istream& is, Point& rhs)
-{
-    return is >> rhs.x >> rhs.y;
-}
 
 //Ghost
 Ghost::Ghost(Pacman* pacman, Point const& startPosition, 
              Point const& scatterPosition, string const& color)
-    : pos(startPosition), scatterPosition(scatterPosition), color(color) {}
+    : pacman{pacman}, pos(startPosition), scatterPosition(scatterPosition), color(color) {}
+
+string Ghost::get_color() const
+{
+    return color;
+}
+
+Point Ghost::get_position() const
+{
+    return pos;
+}
+
+void Ghost::set_position(Point const& p)
+{
+    if (p.x > WIDTH or p.x < 0 or p.y > HEIGHT or p.y < 0)
+    {
+        throw std::runtime_error("position outside valid range");
+    }
+    pos = p;
+}
 
 // Blinky
 Blinky::Blinky(Pacman* pacman, Point const& startPosition, 
-               Point const& scatterposition)
-    : Ghost(pacman, startPosition, scatterposition, "red") {}
+               Point const& scatterPosition)
+    : Ghost(pacman, startPosition, scatterPosition, "red") {}
 
 Point Blinky::get_chase_point() const
 {
-    return Point{0, 0}; //return Pacman::get_position();
+    return pacman->get_position();
 }
 
 Point Blinky::get_scatter_point() const
 {
-    if (!angry) {
-        return Point{WIDTH, HEIGHT};
+    if (!is_angry()) {
+        return scatterPosition;
     } else {
-        return targetPos; //return Pacman::get_position();
+        return pacman->get_position();
     }
 }
 
-string Blinky::get_color() const
-{
-    return "red";
+bool Blinky::is_angry() const {
+    return angry;
 }
 
+void Blinky::set_angry(bool anger) {
+    this->angry = anger;
+}
 //Pinky
 Pinky::Pinky(Pacman* pacman, Point const& startPosition, 
-             Point const& scatterposition)
-    : Ghost(pacman, startPosition, scatterposition, "pink") {}
+             Point const& scatterPosition)
+    : Ghost(pacman, startPosition, scatterPosition, "pink") {}
 
 Point Pinky::get_chase_point() const
 {
-    return Point{0, HEIGHT};
+    Point target = pacman->get_position();
+    Point direction = pacman->get_direction();
+    int targetX = target.x + direction.x * 2;
+    int targetY = target.y + direction.y * 2;
+    return Point{targetX, targetY};
 }
 
 Point Pinky::get_scatter_point() const
 {
-
-    return targetPos;
+    return scatterPosition;
 }
 
-string Pinky::get_color() const
-{
-    return "pink";
-}
 
 //Clyde
 Clyde::Clyde(Pacman* pacman, Point const& startPosition, 
-             Point const& scatterposition, int distance)
-    : Ghost(pacman, startPosition, scatterposition, "orange"), distance(distance) {}
+             Point const& scatterPosition, int distance)
+    : Ghost(pacman, startPosition, scatterPosition, "orange"), distance(distance) {}
 
 Point Clyde::get_chase_point() const
 {
-    return Point{0, 0};
+    Point target = pacman->get_position();
+    int distX = abs(pos.x - target.x);
+    int distY = abs(pos.y - target.y);
+
+    if(sqrt(distX * distX + distY * distY) > static_cast<float>(distance)){
+        return target;
+    } else {
+        return scatterPosition;
+    }
 }
 
 Point Clyde::get_scatter_point() const
 {
-
-    return targetPos;
-}
-
-string Clyde::get_color() const
-{
-    return "orange";
+    return scatterPosition;
 }
