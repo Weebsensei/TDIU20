@@ -13,17 +13,16 @@ std::istream& operator>>(std::istream& is, Point& rhs)
 }
 
 //Ghost
-Ghost::Ghost(Pacman pacman, Point const& startPosition, 
-             Point const& scatterposition, string const& color)
-    : targetPos(pacman.get_position()), targetDir(pacman.get_direction()), 
-    pos(startPosition), scatterposition(scatterposition), color(color) {}
+Ghost::Ghost(Pacman* pacman, Point const& startPosition, 
+             Point const& scatterPosition, string const& color)
+    : pos(startPosition), scatterPosition(scatterPosition), color(color) {}
 
 // Blinky
-Blinky::Blinky(Pacman pacman, Point const& startPosition, 
+Blinky::Blinky(Pacman* pacman, Point const& startPosition, 
                Point const& scatterposition)
     : Ghost(pacman, startPosition, scatterposition, "red") {}
 
-Point Blinky::get_chase_point()
+Point Blinky::get_chase_point() const
 {
     return Point{0, 0}; //return Pacman::get_position();
 }
@@ -43,11 +42,11 @@ string Blinky::get_color() const
 }
 
 //Pinky
-Pinky::Pinky(Pacman pacman, Point const& startPosition, 
+Pinky::Pinky(Pacman* pacman, Point const& startPosition, 
              Point const& scatterposition)
     : Ghost(pacman, startPosition, scatterposition, "pink") {}
 
-Point Pinky::get_chase_point()
+Point Pinky::get_chase_point() const
 {
     return Point{0, HEIGHT};
 }
@@ -64,11 +63,11 @@ string Pinky::get_color() const
 }
 
 //Clyde
-Clyde::Clyde(Pacman pacman, Point const& startPosition, 
+Clyde::Clyde(Pacman* pacman, Point const& startPosition, 
              Point const& scatterposition, int distance)
     : Ghost(pacman, startPosition, scatterposition, "orange"), distance(distance) {}
 
-Point Clyde::get_chase_point()
+Point Clyde::get_chase_point() const
 {
     return Point{0, 0};
 }
