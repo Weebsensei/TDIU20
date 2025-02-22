@@ -9,7 +9,7 @@ Ghost_Tester::Ghost_Tester()
     pacman = new Pacman{};
     ghosts.emplace_back(new Blinky{pacman, Point{5, 10}, Point{WIDTH-1, HEIGHT-1}});
     ghosts.emplace_back(new Pinky{pacman, Point{4, 2}, Point{0, HEIGHT-1}});
-    ghosts.emplace_back(new Clyde{pacman, Point{10, 10}, Point{0, 0}, 4});
+    ghosts.emplace_back(new Clyde{pacman, Point{10, 10}, Point{0, 0}, 6});
 }
 
 // Deconstructor

@@ -84,7 +84,7 @@ Point Clyde::get_chase_point() const
     int distX = abs(pos.x - target.x);
     int distY = abs(pos.y - target.y);
 
-    if(sqrt(distX * distX + distY * distY) > static_cast<float>(distance)){
+    if(sqrt(distX * distX + distY * distY) < static_cast<float>(distance)){
         return target;
     } else {
         return scatterPosition;
