@@ -4,7 +4,7 @@ using namespace std;
 
 // Constructor
 Ghost_Tester::Ghost_Tester()
-    : pacman {}, ghosts{}, chasing{true}
+    : pacman {}, ghosts{}, chasing{}
 {
     pacman = new Pacman{};
     ghosts.emplace_back(new Blinky{pacman, Point{5, 10}, Point{WIDTH-1, HEIGHT-1}});
@@ -47,7 +47,7 @@ void Ghost_Tester::run()
                 }
             }
         }
-        else  if (command == "pos") 
+        else if (command == "pos") 
         {
             Point new_pos {};
             iss >> new_pos.x >> new_pos.y;
@@ -73,7 +73,7 @@ void Ghost_Tester::run()
             for (Ghost* &ghost : ghosts)
             {
                 // Swap between angry or not
-                if( Blinky* blinky = dynamic_cast<Blinky*>(ghost)){
+                if (Blinky* blinky = dynamic_cast<Blinky*>(ghost)){
                     blinky->set_angry(!blinky->is_angry());
                 }
             }

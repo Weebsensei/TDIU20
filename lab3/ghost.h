@@ -36,7 +36,6 @@ public:
 
     Point get_chase_point() const override;
     Point get_scatter_point() const override;
-    // string get_color() const override;
 
     bool is_angry() const;
     void set_angry(bool anger);
@@ -52,7 +51,6 @@ public:
 
     Point get_chase_point() const override;
     Point get_scatter_point() const override;
-    // string get_color() const override;
 };
 
 class Clyde : public Ghost
@@ -62,7 +60,6 @@ public:
 
     Point get_chase_point() const override;
     Point get_scatter_point() const override;
-    // string get_color() const override;
 private:
     int distance;
 };
