@@ -15,6 +15,7 @@ Ghost_Tester::Ghost_Tester()
 // Deconstructor
 Ghost_Tester::~Ghost_Tester()
 {
+    delete pacman;
     for (Ghost* ghost : ghosts) {
         delete ghost;
     }
