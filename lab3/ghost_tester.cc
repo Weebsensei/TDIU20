@@ -2,24 +2,27 @@
 
 using namespace std;
 
+// Information om komplettering:
+//   Siffrorna hänvisar till rättningsprotokollet som finns på
+//   kurshemsidan -> läsning -> Literatur -> "Uppgruppens bedömningsprotokoll"
+//   Kompletteringen kan gälla hela filen och alla filer i labben,
+//   så får ni komplettering på en sak, kan samma sak förekomma på
+//   fler ställen utan att jag skrivit det.
+//
+//   Komplettering lämnas in via sendlab efter senast en (1) vecka
+//
+//   Har ni frågor om kompletteringen kan ni maila mig.
+
+// +++++Komplettering: Använd inte pekare där det inte absolut behövs
+// +++++Komplettering: Kodupprepning i kommandona för pos, dir och flytta spöken
+
 // Constructor
 Ghost_Tester::Ghost_Tester()
-    : pacman {}, ghosts{}, chasing{}
+   : pacman {}, ghosts{}, chasing{}
 {
-    pacman = new Pacman{};
-    ghosts.emplace_back(new Blinky{pacman, Point{5, 10}, Point{WIDTH-1, HEIGHT-1}});
-    ghosts.emplace_back(new Pinky{pacman, Point{4, 2}, Point{0, HEIGHT-1}});
-    ghosts.emplace_back(new Clyde{pacman, Point{10, 10}, Point{0, 0}, 6});
-}
-
-// Deconstructor
-Ghost_Tester::~Ghost_Tester()
-{
-    delete pacman;
-    for (Ghost* ghost : ghosts) {
-        delete ghost;
-    }
-
+    ghosts.emplace_back(make_unique<Blinky>(pacman, Point{5, 10}, Point{WIDTH-1, HEIGHT-1}));
+    ghosts.emplace_back(make_unique<Pinky>(pacman, Point{4, 2}, Point{0, HEIGHT-1}));
+    ghosts.emplace_back(make_unique<Clyde>(pacman, Point{10, 10}, Point{0, 0}, 6));
 }
 
 void Ghost_Tester::run()
@@ -38,27 +41,21 @@ void Ghost_Tester::run()
         
         if(command == "red" || command == "pink" || command == "orange") 
         {  
-            Point new_pos {};
-            iss >> new_pos.x >> new_pos.y;
-            for (Ghost* &ghost : ghosts)
+            for (std::unique_ptr<Ghost>& ghost : ghosts)
             {
                 if (ghost->get_color() == command)
                 {
-                    ghost->set_position(new_pos);
+                    ghost->set_position(get_point(iss));
                 }
             }
         }
         else if (command == "pos") 
         {
-            Point new_pos {};
-            iss >> new_pos.x >> new_pos.y;
-            pacman->set_position(new_pos);
+            pacman.set_position(get_point(iss));
         }
         else if (command == "dir") 
         {
-            Point new_dir {};
-            iss >> new_dir.x >> new_dir.y;
-            pacman->set_direction(new_dir);
+            pacman.set_direction(get_point(iss));
         }
         else if(command == "chase") {
             chasing = true;
@@ -71,10 +68,11 @@ void Ghost_Tester::run()
             break;
         }
         else if(command == "anger") {
-            for (Ghost* &ghost : ghosts)
+            for (std::unique_ptr<Ghost>& ghost : ghosts)
             {
                 // Swap between angry or not
-                if (Blinky* blinky = dynamic_cast<Blinky*>(ghost)){
+                if (Blinky* blinky = dynamic_cast<Blinky*>(ghost.get()))
+                {
                     blinky->set_angry(!blinky->is_angry());
                 }
             }
@@ -82,18 +80,25 @@ void Ghost_Tester::run()
     }
 }
 
+Point Ghost_Tester::get_point(istringstream &iss)
+{
+    Point new_pos {};
+    iss >> new_pos.x >> new_pos.y;
+    return new_pos;
+}
+
 string Ghost_Tester::to_draw(Point const& curr_pos)
 {
     string to_draw{"  "};
 
     // Pacman position
-    if (pacman->get_position() == curr_pos)
+    if (pacman.get_position() == curr_pos)
     {
         to_draw[1] = '@';
     }
 
     // Ghost Positions (Uppercase)
-    for(const Ghost* ghost : ghosts)
+    for(const std::unique_ptr<Ghost>& ghost : ghosts)
     {
         if(ghost->get_position() == curr_pos)
         {
@@ -103,7 +108,7 @@ string Ghost_Tester::to_draw(Point const& curr_pos)
     }
 
     // Ghost Target (Lowercase)
-    for(const Ghost* ghost : ghosts)
+    for(const std::unique_ptr<Ghost>& ghost : ghosts)
     {
         if(chasing)
         {

@@ -14,10 +14,10 @@ class Ghost_Tester
 {
 public:
     Ghost_Tester();
-    ~Ghost_Tester();
+    ~Ghost_Tester() = default;
 
-    Ghost_Tester(const Ghost_Tester&);
-    Ghost_Tester operator=(const Ghost_Tester&);
+    Ghost_Tester(const Ghost_Tester&) = delete;
+    Ghost_Tester operator=(const Ghost_Tester&) = delete;
 
     void run();
 
@@ -25,8 +25,10 @@ private:
     string to_draw(Point const &curr_pos);
     void draw_map();
 
-    Pacman* pacman;
-    vector<Ghost*> ghosts;
+    Point get_point(istringstream &iss);
+
+    Pacman pacman;
+    vector<unique_ptr<Ghost>> ghosts;
     bool chasing = true;
 };
 
